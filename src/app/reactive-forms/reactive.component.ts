@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from '@angular/forms';
+import { forbiddenNameValidator } from '../forbiddenname.directive';
 
 @Component({
   selector: 'reactive',
@@ -9,21 +10,28 @@ import { FormGroup, FormControl, Validators, FormBuilder, FormArray } from '@ang
 export class ReactiveFormComponent implements OnInit {
   regForm;
   constructor(private fb:FormBuilder) {
+  }
+  
+  ngOnInit() {
     this.regForm = new FormGroup({
-      firstname:new FormControl('',[Validators.required]),
+      firstname:new FormControl('',[Validators.required,forbiddenNameValidator(/bob/i)]),
       lastname:new FormControl('',[Validators.required]),
       email: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required]),
       address:new FormGroup({
         street:new FormControl('',[Validators.required]),
         city:new FormControl(''),
-        zipcode:new FormControl('',[Validators.min(6)])
+        zipcode:new FormControl('',[Validators.required,Validators.minLength(6)])
       }),
       aliases:this.fb.array([this.fb.control('')])
     });
+
+
   }
 
-  ngOnInit() {}
+  get fname(){
+    return this.regForm.get('firstname')
+  }
 get aliases(){
   return this.regForm.get('aliases') as FormArray
 }
