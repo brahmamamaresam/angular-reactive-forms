@@ -1,0 +1,45 @@
+<form [formGroup]="regForm" (keyup.enter)="onSubmit()">
+<label for="fname">First Name :</label>
+<input type="text" formControlName='firstname'>
+<br>
+<br>
+<label for="lname">Last Name :</label>
+<input type="text" formControlName='lastname'>
+   <br><br>
+  <label for="email">Email :</label>
+  <input type="email" id="email" formControlName="email" />
+  <div *ngIf="email.invalid && email.touched">email is required</div>
+  <br />
+  <br />
+  <label for="pass">Password :</label>
+  <input type="password" id="pass" formControlName="password" />
+  <br />
+  <br />
+  <div formGroupName='address'>
+  <label for="street">Street :</label>
+  <input type="text" id="street" formControlName='street'>
+  <br><br>
+  <label for="City">City :</label>
+  <input type="text" formControlName='city'>
+  <br><br>
+  <label for="zip">Zip Code :</label>
+  <input type="number" formControlName='zipcode'>
+  </div>
+  <br>
+  <br>
+  <div formArrayName='aliases'>
+    <button (click)="addAlias()">Add Alias</button>
+  <h2>Aliases :</h2>
+  <div *ngFor="let alias of aliases.controls;let i=index">
+<label for="alias-{{i}}">alias :</label>
+<input type="text" id="alias-{{i}}" [formControlName]="i">
+  </div>
+  </div>
+  <button [disabled]="form.invalid && form.touched">submit</button>
+  <button type="reset">reset</button>
+  <button type="button" (click)="updateEmail()">Update Email</button>
+</form>
+<p>reactive form data{{ regForm.value | json }}</p>
+<p>{{ email.value }}</p>
+<p>{{ password.value }}</p>
+<p>form status :{{form.status}}</p>
